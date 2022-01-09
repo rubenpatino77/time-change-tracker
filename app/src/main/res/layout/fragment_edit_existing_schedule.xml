@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:gravity="bottom|center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:gravity="bottom|center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageButton
+                android:id="@+id/button_go_back"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:src="@android:drawable/ic_menu_revert"/>
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:id="@+id/button_mute_schedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:src="@android:drawable/ic_lock_silent_mode_off"
+                android:backgroundTint="#028A0F"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_of_location_or_business"
+            android:textColor="#777777"/>
+
+        <TextView
+            android:id="@+id/businessExample"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/address"
+            android:textColor="#777777"/>
+
+
+        <TextView
+            android:id="@+id/addressExample"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/city"
+                android:textColor="#777777"/>
+
+            <TextView
+                android:id="@+id/cityExample"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:ems="10"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:paddingStart="10sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/state"
+                android:textColor="#777777"/>
+
+            <TextView
+                android:id="@+id/stateExample"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:paddingStart="10sp"/>
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:id="@+id/time_textview"
+            android:textSize="20sp"/>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/asking_when_to_notify"
+            android:textColor="@color/black"
+            android:id="@+id/question_when_to_notify"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/day_of"
+            android:id="@+id/day_of"
+            android:layout_gravity="left"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notify_day_before"
+            android:id="@+id/day_before"
+            android:layout_gravity="left"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notify_two_days_before"
+            android:id="@+id/two_days_before"
+            android:layout_gravity="left"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notify_three_days_before"
+            android:id="@+id/three_days_before"
+            android:layout_gravity="left"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notify_four_days_before"
+            android:id="@+id/four_days_before"
+            android:layout_gravity="left"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notify_five_days_before"
+            android:id="@+id/five_days_before"
+            android:layout_gravity="left"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notify_six_days_before"
+            android:id="@+id/six_days_before"
+            android:layout_gravity="left"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notify_week_before"
+            android:id="@+id/week_before"
+            android:layout_gravity="left"/>
+
+        <Button
+            android:id="@+id/button_finish_edit_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/finish"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            android:backgroundTint="#00008B"
+            app:backgroundTint="@null"/>
+
+        <Button
+            android:id="@+id/button_cancel_edit_schedule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/delete"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            android:backgroundTint="#FF0000"
+            app:backgroundTint="@null"/>
+
+
+    </LinearLayout></ScrollView>
