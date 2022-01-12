@@ -40,7 +40,7 @@ public class HomePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
         arrayList = new ArrayList<>();
@@ -103,9 +103,5 @@ public class HomePageFragment extends Fragment {
                 transition.replace(R.id.fragmentContainer, new ScheduleEditorFragment()).commit();
             }
         });
-    }
-
-    public View getview(){
-        return view;
     }
 }

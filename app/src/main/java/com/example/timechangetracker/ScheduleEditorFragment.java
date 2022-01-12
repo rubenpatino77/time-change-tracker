@@ -234,9 +234,8 @@ public class ScheduleEditorFragment extends Fragment {
                         dialog.dismiss();
                     }
                 });
-        //Creating dialog box
+
         AlertDialog checkboxAlert = builder.create();
-        //Setting the title manually
         checkboxAlert.setTitle("Oops, you forgot to choose an option to be notified.");
         checkboxAlert.show();
     }

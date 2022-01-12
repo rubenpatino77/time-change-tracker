@@ -23,7 +23,7 @@ import java.util.Arrays;
 public class checkOnlineSchedule extends JobService {
 
     getOnlineSchedule getOnlineSchedule;
-    JobParameters parameters; //todo do i need this?
+    JobParameters parameters;
 
     @Override
     public boolean onStartJob(JobParameters jobParameters) {
@@ -248,7 +248,6 @@ public class checkOnlineSchedule extends JobService {
                     .setContentTitle("TIME CHANGED")
                     .setContentText("The hours of operation has been changed for a day.")
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    // Set the intent that will fire when the user taps the notification
                     .setContentIntent(pendingIntent)
                     .setAutoCancel(true)
                     .setChannelId("TimeChange");

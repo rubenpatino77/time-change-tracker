@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 public class EditExistingScheduleFragment extends Fragment {
 
-    String name, address, city, state, time, arrayValue;
+    String name, address, city, state, time;
     TextView nameInput, addressInput, cityInput, stateInput, timeFound;
     Button finishButton, deleteButton;
     ImageButton muteButton, backButton;
@@ -109,8 +109,6 @@ public class EditExistingScheduleFragment extends Fragment {
 
 
                 if(inputsSatisfied){
-
-                    checkboxes = new Integer[8];
 
                     if(dayOf.isChecked()){
                         checkboxes[0] = 1;
@@ -216,7 +214,6 @@ public class EditExistingScheduleFragment extends Fragment {
 
     private void getSQLCheckboxes(View view, Integer[] checkboxes){
         //todo fix so it is not so inefficient. Use sql syntax in getCheckboxes()
-        //checkboxes = sql.getCheckboxes(name, address, city, state);
         sql = new SQLHelper(view.getContext());
         Cursor cursor = sql.getData();
         if (cursor.getCount() > 0) {
