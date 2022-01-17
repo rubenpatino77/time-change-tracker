@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,7 @@ public class ScheduleEditorFragment extends Fragment {
     EditText nameInput, addressInput, cityInput, stateInput;
     Button finishButton, cancelButton;
     ImageButton muteButton, backButton;
-    CheckBox dayOf, oneDay, twoDays, threeDays, fourDays, fiveDays, sixDays, week;
+    RadioButton oneDay, twoDays, threeDays, fourDays, fiveDays, sixDays;
     Integer[] checkboxes;
     TextView question;
     SQLHelper dataBase;
@@ -77,8 +78,8 @@ public class ScheduleEditorFragment extends Fragment {
                     stateInput.setError("State required to ensure correct location");
                 }
 
-                if (!dayOf.isChecked() && !oneDay.isChecked() && !twoDays.isChecked() && !threeDays.isChecked() && !fourDays.isChecked()
-                        && !fiveDays.isChecked() && !sixDays.isChecked() && !week.isChecked()) {
+                if (!oneDay.isChecked() && !twoDays.isChecked() && !threeDays.isChecked() && !fourDays.isChecked()
+                        && !fiveDays.isChecked() && !sixDays.isChecked()) {
                     inputsSatisfied = false;
                     question.setTextColor(Color.RED);
                     question.setError("Please choose at least 1 option below");
@@ -86,48 +87,39 @@ public class ScheduleEditorFragment extends Fragment {
                 }
 
                 if(inputsSatisfied){
-                    checkboxes = new Integer[8];
+                    checkboxes = new Integer[6];
 
-                    if(dayOf.isChecked()){
+                    if(oneDay.isChecked()){
                         checkboxes[0] = 1;
                     } else {
                         checkboxes[0] = 0;
                     }
-                    if(oneDay.isChecked()){
+                    if(twoDays.isChecked()){
                         checkboxes[1] = 1;
                     } else {
                         checkboxes[1] = 0;
                     }
-                    if(twoDays.isChecked()){
+                    if(threeDays.isChecked()){
                         checkboxes[2] = 1;
                     } else {
                         checkboxes[2] = 0;
                     }
-                    if(threeDays.isChecked()){
+                    if(fourDays.isChecked()){
                         checkboxes[3] = 1;
                     } else {
                         checkboxes[3] = 0;
                     }
-                    if(fourDays.isChecked()){
+                    if(fiveDays.isChecked()){
                         checkboxes[4] = 1;
                     } else {
                         checkboxes[4] = 0;
                     }
-                    if(fiveDays.isChecked()){
+                    if(sixDays.isChecked()){
                         checkboxes[5] = 1;
                     } else {
                         checkboxes[5] = 0;
                     }
-                    if(sixDays.isChecked()){
-                        checkboxes[6] = 1;
-                    } else {
-                        checkboxes[6] = 0;
-                    }
-                    if(week.isChecked()){
-                        checkboxes[7] = 1;
-                    } else {
-                        checkboxes[7] = 0;
-                    }
+
                     name = nameInput.getText().toString();
                     address = addressInput.getText().toString();
                     city = cityInput.getText().toString();
@@ -148,7 +140,7 @@ public class ScheduleEditorFragment extends Fragment {
                     if(time != null && !time.equals("")){
                         checkDataInserted = dataBase.insertUserData(name, address, city, state,
                                 time, checkboxes[0], checkboxes[1], checkboxes[2], checkboxes[3],
-                                checkboxes[4], checkboxes[5], checkboxes[6], checkboxes[7]);
+                                checkboxes[4], checkboxes[5]);
                     }
 
                     if(checkDataInserted){
@@ -215,14 +207,12 @@ public class ScheduleEditorFragment extends Fragment {
     }
 
     private void findAllCheckboxViews(View view){
-        dayOf = view.findViewById(R.id.day_of);
         oneDay = view.findViewById(R.id.day_before);
         twoDays = view.findViewById(R.id.two_days_before);
         threeDays = view.findViewById(R.id.three_days_before);
         fourDays = view.findViewById(R.id.four_days_before);
         fiveDays = view.findViewById(R.id.five_days_before);
         sixDays = view.findViewById(R.id.six_days_before);
-        week = view.findViewById(R.id.week_before);
     }
 
     private void alertNotificationMissing(){

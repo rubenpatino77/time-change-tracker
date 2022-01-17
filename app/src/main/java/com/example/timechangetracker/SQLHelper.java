@@ -24,7 +24,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        database.execSQL("create Table UserDetails(locationName TEXT primary key, address TEXT, city TEXT, state TEXT, time TEXT, dayOfCheckbox INT, oneDayCheckbox INT, twoDayCheckbox INT, threeDayCheckbox INT, fourDayCheckbox INT, fiveDayCheckbox INT, sixDayCheckbox INT, sevenDayCheckbox INT)");
+        database.execSQL("create Table UserDetails(locationName TEXT primary key, address TEXT, city TEXT, state TEXT, time TEXT, oneDayCheckbox INT, twoDayCheckbox INT, threeDayCheckbox INT, fourDayCheckbox INT, fiveDayCheckbox INT, sixDayCheckbox INT)");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SQLHelper extends SQLiteOpenHelper {
         database.execSQL("drop Table if exists UserDetails");
     }
 
-    public boolean insertUserData(String locationName, String address, String city, String state, String time, int dayOfCheckbox, int oneDayCheckbox, int twoDayCheckbox, int threeDayCheckbox, int fourDayCheckbox, int fiveDayCheckbox, int sixDayCheckbox, int sevenDayCheckbox){
+    public boolean insertUserData(String locationName, String address, String city, String state, String time, int oneDayCheckbox, int twoDayCheckbox, int threeDayCheckbox, int fourDayCheckbox, int fiveDayCheckbox, int sixDayCheckbox){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("locationName", locationName);
@@ -40,14 +40,12 @@ public class SQLHelper extends SQLiteOpenHelper {
         values.put("city", city);
         values.put("state", state);
         values.put("time", time);
-        values.put("dayOfCheckbox", dayOfCheckbox);
         values.put("oneDayCheckbox", oneDayCheckbox);
         values.put("twoDayCheckbox", twoDayCheckbox);
         values.put("threeDayCheckbox", threeDayCheckbox);
         values.put("fourDayCheckbox", fourDayCheckbox);
         values.put("fiveDayCheckbox", fiveDayCheckbox);
         values.put("sixDayCheckbox", sixDayCheckbox);
-        values.put("sevenDayCheckbox", sevenDayCheckbox);
 
         long add = database.insert("UserDetails", null, values);
         if(add == -1){
@@ -57,17 +55,15 @@ public class SQLHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean updateUserData(String locationName, String address, String city, String state, int dayOfCheckbox, int oneDayCheckbox, int twoDayCheckbox, int threeDayCheckbox, int fourDayCheckbox, int fiveDayCheckbox, int sixDayCheckbox, int sevenDayCheckbox){
+    public boolean updateUserData(String locationName, String address, String city, String state, int oneDayCheckbox, int twoDayCheckbox, int threeDayCheckbox, int fourDayCheckbox, int fiveDayCheckbox, int sixDayCheckbox){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("dayOfCheckbox", dayOfCheckbox);
         values.put("oneDayCheckbox", oneDayCheckbox);
         values.put("twoDayCheckbox", twoDayCheckbox);
         values.put("threeDayCheckbox", threeDayCheckbox);
         values.put("fourDayCheckbox", fourDayCheckbox);
         values.put("fiveDayCheckbox", fiveDayCheckbox);
         values.put("sixDayCheckbox", sixDayCheckbox);
-        values.put("sevenDayCheckbox", sevenDayCheckbox);
 
         Cursor cursor = database.rawQuery("Select * from UserDetails where locationName = ? AND address = ? AND city = ? AND state = ?", new String[] {locationName, address, city, state});
         if(cursor.getCount() > 0) {

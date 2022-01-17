@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ public class EditExistingScheduleFragment extends Fragment {
     TextView nameInput, addressInput, cityInput, stateInput, timeFound;
     Button finishButton, deleteButton;
     ImageButton muteButton, backButton;
-    CheckBox dayOf, oneDay, twoDays, threeDays, fourDays, fiveDays, sixDays, week;
+    RadioButton oneDay, twoDays, threeDays, fourDays, fiveDays, sixDays;
     Integer[] checkboxes;
     SQLHelper sql;
 
@@ -52,7 +53,7 @@ public class EditExistingScheduleFragment extends Fragment {
         state = requireArguments().getString("state");
         time = requireArguments().getString("time");
 
-        checkboxes = new Integer[8];
+        checkboxes = new Integer[6];
 
         getSQLCheckboxes(view, checkboxes);
 
@@ -70,21 +71,17 @@ public class EditExistingScheduleFragment extends Fragment {
         for(int i = 0; i<checkboxes.length; i++){
             if (checkboxes[i].equals(1)){
                 switch (i){
-                    case 0: dayOf.setChecked(true);
+                    case 0: oneDay.setChecked(true);
                         break;
-                    case 1: oneDay.setChecked(true);
+                    case 1: twoDays.setChecked(true);
                         break;
-                    case 2: twoDays.setChecked(true);
+                    case 2: threeDays.setChecked(true);
                         break;
-                    case 3: threeDays.setChecked(true);
+                    case 3: fourDays.setChecked(true);
                         break;
-                    case 4: fourDays.setChecked(true);
+                    case 4: fiveDays.setChecked(true);
                         break;
-                    case 5: fiveDays.setChecked(true);
-                        break;
-                    case 6: sixDays.setChecked(true);
-                        break;
-                    case 7: week.setChecked(true);
+                    case 5: sixDays.setChecked(true);
                         break;
                     default:
                         break;
@@ -99,8 +96,8 @@ public class EditExistingScheduleFragment extends Fragment {
 
                 boolean inputsSatisfied = true;
 
-                if (!dayOf.isChecked() && !oneDay.isChecked() && !twoDays.isChecked() && !threeDays.isChecked() && !fourDays.isChecked()
-                        && !fiveDays.isChecked() && !sixDays.isChecked() && !week.isChecked()) {
+                if (!oneDay.isChecked() && !twoDays.isChecked() && !threeDays.isChecked() && !fourDays.isChecked()
+                        && !fiveDays.isChecked() && !sixDays.isChecked()) {
                     inputsSatisfied = false;
                     question.setTextColor(Color.RED);
                     question.setError("Please choose at least 1 option below");
@@ -110,50 +107,40 @@ public class EditExistingScheduleFragment extends Fragment {
 
                 if(inputsSatisfied){
 
-                    if(dayOf.isChecked()){
+                    if(oneDay.isChecked()){
                         checkboxes[0] = 1;
                     } else {
                         checkboxes[0] = 0;
                     }
-                    if(oneDay.isChecked()){
+                    if(twoDays.isChecked()){
                         checkboxes[1] = 1;
                     } else {
                         checkboxes[1] = 0;
                     }
-                    if(twoDays.isChecked()){
+                    if(threeDays.isChecked()){
                         checkboxes[2] = 1;
                     } else {
                         checkboxes[2] = 0;
                     }
-                    if(threeDays.isChecked()){
+                    if(fourDays.isChecked()){
                         checkboxes[3] = 1;
                     } else {
                         checkboxes[3] = 0;
                     }
-                    if(fourDays.isChecked()){
+                    if(fiveDays.isChecked()){
                         checkboxes[4] = 1;
                     } else {
                         checkboxes[4] = 0;
                     }
-                    if(fiveDays.isChecked()){
+                    if(sixDays.isChecked()){
                         checkboxes[5] = 1;
                     } else {
                         checkboxes[5] = 0;
                     }
-                    if(sixDays.isChecked()){
-                        checkboxes[6] = 1;
-                    } else {
-                        checkboxes[6] = 0;
-                    }
-                    if(week.isChecked()){
-                        checkboxes[7] = 1;
-                    } else {
-                        checkboxes[7] = 0;
-                    }
 
                     boolean checkDataUpdated = dataBase.updateUserData(name, address, city, state,
                             checkboxes[0], checkboxes[1], checkboxes[2], checkboxes[3], checkboxes[4],
-                            checkboxes[5], checkboxes[6], checkboxes[7]);
+                            checkboxes[5]);
 
                     if(checkDataUpdated){
                         Toast.makeText(getActivity(), "New Entry Updated", Toast.LENGTH_SHORT).show();
@@ -207,11 +194,6 @@ public class EditExistingScheduleFragment extends Fragment {
     }
 
 
-
-
-
-
-
     private void getSQLCheckboxes(View view, Integer[] checkboxes){
         //todo fix so it is not so inefficient. Use sql syntax in getCheckboxes()
         sql = new SQLHelper(view.getContext());
@@ -229,14 +211,12 @@ public class EditExistingScheduleFragment extends Fragment {
     }
 
     private void assignCheckboxObjects(View view){
-        dayOf = view.findViewById(R.id.day_of);
         oneDay = view.findViewById(R.id.day_before);
         twoDays = view.findViewById(R.id.two_days_before);
         threeDays = view.findViewById(R.id.three_days_before);
         fourDays = view.findViewById(R.id.four_days_before);
         fiveDays = view.findViewById(R.id.five_days_before);
         sixDays = view.findViewById(R.id.six_days_before);
-        week = view.findViewById(R.id.week_before);
     }
 
 

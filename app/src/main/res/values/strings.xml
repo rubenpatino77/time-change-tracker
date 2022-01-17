@@ -14,9 +14,8 @@
     <string name="ex_ca">Ex. CA</string>
     <string name="ex_los_angeles">Ex. Los Angeles</string>
     <string name="cancel">Cancel</string>
-    <string name="asking_when_to_notify">How early do you want to be notified of the changes? (You may choose more than one.)</string>
+    <string name="asking_when_to_notify">How early do you want to be notified of the changes?</string>
     <string name="notify_day_before">A day before the hour modifications go into effect</string>
-    <string name="notify_week_before">A week before the hour modifications go into effect</string>
     <string name="finish">Finish</string>
     <string name="notify_two_days_before">2 days before the hour modifications go into effect</string>
     <string name="notify_three_days_before">3 days before the hour modifications go into effect</string>
@@ -25,5 +24,4 @@
     <string name="notify_six_days_before">6 days before the hour modifications go into effect</string>
     <string name="delete">Delete</string>
     <string name="loading">Loading...</string>
-    <string name="day_of">The day of the schedule</string>
 </resources>

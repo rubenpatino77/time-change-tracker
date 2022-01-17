@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class checkOnlineSchedule extends JobService {
 
@@ -35,16 +36,16 @@ public class checkOnlineSchedule extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters jobParameters) {
-        if(null != getOnlineSchedule){
-            if(!getOnlineSchedule.isCancelled()){
+        if (null != getOnlineSchedule) {
+            if (!getOnlineSchedule.isCancelled()) {
                 getOnlineSchedule.cancel(true);
             }
         }
         return false;
     }
 
-    private class getOnlineSchedule extends AsyncTask<Void, Void, Void>{
-        public static final String CHANNEL_1 = "Time Changed";
+    private class getOnlineSchedule extends AsyncTask<Void, Void, Void> {
+        SQLHelper sql;
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -53,8 +54,7 @@ public class checkOnlineSchedule extends JobService {
             strings = getLocationValues();
             sqlTimes = getSqlTimes();
 
-
-            for(int i = 0; i < strings.size(); i++) {
+            for (int i = 0; i < strings.size(); i++) {
 
                 String onlineSchedule = null;
                 String[] onlineDayByDay;
@@ -70,11 +70,28 @@ public class checkOnlineSchedule extends JobService {
                     e.printStackTrace(); //todo stackoverflow people say dont use this. still need to catch but not with printstacktrace
                 }
 
-                if(onlineSchedule != null) {
+                if (onlineSchedule != null) {
                     onlineDayByDay = organizeTimes(onlineSchedule);
                     sqlDayByDay = organizeTimes(sqlTimes.get(i));
-                    if(!Arrays.equals(onlineDayByDay, sqlDayByDay)){
-                        timeChangeNotification();
+
+                    if (!Arrays.equals(onlineDayByDay, sqlDayByDay)) {
+                        Calendar calendar = Calendar.getInstance();
+                        int today = calendar.get(Calendar.DAY_OF_WEEK); //Day 1 starts on sunday
+
+
+                        Integer[] checkboxes = new Integer[6];
+                        getSQLCheckboxes(checkboxes, strings.get(i));
+
+                        int checkedDaysBefore= 0;
+                        for(int x = 0; x < checkboxes.length; x++){
+                            if(checkboxes[x] == 1){
+                                checkedDaysBefore = x; //Don't add 1 because sql & online data has day 1 on monday
+                            }
+                        }
+
+                        if(checkedRadioButtonIsToday(today, checkedDaysBefore, sqlDayByDay, onlineDayByDay)){
+                            timeChangeNotification();
+                        }
                     }
                 }
             }
@@ -83,10 +100,9 @@ public class checkOnlineSchedule extends JobService {
             return null;
         }
 
-        private ArrayList<String> getLocationValues(){
+        private ArrayList<String> getLocationValues() {
             ArrayList<String> locationList;
             SQLHelper sql;
-            //HomePageFragment home = new HomePageFragment();
             locationList = new ArrayList<>();
             sql = new SQLHelper(checkOnlineSchedule.this);
 
@@ -102,7 +118,7 @@ public class checkOnlineSchedule extends JobService {
             return locationList;
         }
 
-        private ArrayList<String> getSqlTimes(){
+        private ArrayList<String> getSqlTimes() {
             ArrayList<String> sqlTimesList;
             SQLHelper sql;
             HomePageFragment home = new HomePageFragment();
@@ -120,22 +136,22 @@ public class checkOnlineSchedule extends JobService {
             return sqlTimesList;
         }
 
-        private String[] organizeTimes(String times){
+        private String[] organizeTimes(String times) {
             times = times.toLowerCase();
             String[] organizeHelper = times.split(" ");
             String[] dayByday = new String[7];
 
             int i = 0;
-            while(i < organizeHelper.length){
+            while (i < organizeHelper.length) {
                 StringBuilder stringBuilder = new StringBuilder();
-                switch (organizeHelper[i]){
+                switch (organizeHelper[i]) {
                     case "monday":
                         stringBuilder.append("Monday");
                         i++;
                         while (i < organizeHelper.length && organizeHelper[i] != null && !organizeHelper[i].equals("tuesday") &&
                                 !organizeHelper[i].equals("wednesday") && !organizeHelper[i].equals("thursday") &&
                                 !organizeHelper[i].equals("friday") && !organizeHelper[i].equals("saturday") &&
-                                !organizeHelper[i].equals("sunday")){
+                                !organizeHelper[i].equals("sunday")) {
                             stringBuilder.append(" ");
                             stringBuilder.append(organizeHelper[i]);
                             i++;
@@ -148,7 +164,7 @@ public class checkOnlineSchedule extends JobService {
                         while (i < organizeHelper.length && organizeHelper[i] != null && !organizeHelper[i].equals("monday") &&
                                 !organizeHelper[i].equals("wednesday") && !organizeHelper[i].equals("thursday") &&
                                 !organizeHelper[i].equals("friday") && !organizeHelper[i].equals("saturday") &&
-                                !organizeHelper[i].equals("sunday")){
+                                !organizeHelper[i].equals("sunday")) {
                             stringBuilder.append(" ");
                             stringBuilder.append(organizeHelper[i]);
                             i++;
@@ -161,7 +177,7 @@ public class checkOnlineSchedule extends JobService {
                         while (i < organizeHelper.length && organizeHelper[i] != null && !organizeHelper[i].equals("tuesday") &&
                                 !organizeHelper[i].equals("monday") && !organizeHelper[i].equals("thursday") &&
                                 !organizeHelper[i].equals("friday") && !organizeHelper[i].equals("saturday") &&
-                                !organizeHelper[i].equals("sunday")){
+                                !organizeHelper[i].equals("sunday")) {
                             stringBuilder.append(" ");
                             stringBuilder.append(organizeHelper[i]);
                             i++;
@@ -174,7 +190,7 @@ public class checkOnlineSchedule extends JobService {
                         while (i < organizeHelper.length && organizeHelper[i] != null && !organizeHelper[i].equals("tuesday") &&
                                 !organizeHelper[i].equals("wednesday") && !organizeHelper[i].equals("monday") &&
                                 !organizeHelper[i].equals("friday") && !organizeHelper[i].equals("saturday") &&
-                                !organizeHelper[i].equals("sunday")){
+                                !organizeHelper[i].equals("sunday")) {
                             stringBuilder.append(" ");
                             stringBuilder.append(organizeHelper[i]);
                             i++;
@@ -187,7 +203,7 @@ public class checkOnlineSchedule extends JobService {
                         while (i < organizeHelper.length && organizeHelper[i] != null && !organizeHelper[i].equals("tuesday") &&
                                 !organizeHelper[i].equals("wednesday") && !organizeHelper[i].equals("thursday") &&
                                 !organizeHelper[i].equals("monday") && !organizeHelper[i].equals("saturday") &&
-                                !organizeHelper[i].equals("sunday")){
+                                !organizeHelper[i].equals("sunday")) {
                             stringBuilder.append(" ");
                             stringBuilder.append(organizeHelper[i]);
                             i++;
@@ -200,7 +216,7 @@ public class checkOnlineSchedule extends JobService {
                         while (i < organizeHelper.length && organizeHelper[i] != null && !organizeHelper[i].equals("tuesday") &&
                                 !organizeHelper[i].equals("wednesday") && !organizeHelper[i].equals("thursday") &&
                                 !organizeHelper[i].equals("friday") && !organizeHelper[i].equals("monday") &&
-                                !organizeHelper[i].equals("sunday")){
+                                !organizeHelper[i].equals("sunday")) {
                             stringBuilder.append(" ");
                             stringBuilder.append(organizeHelper[i]);
                             i++;
@@ -213,7 +229,7 @@ public class checkOnlineSchedule extends JobService {
                         while (i < organizeHelper.length && organizeHelper[i] != null && !organizeHelper[i].equals("tuesday") &&
                                 !organizeHelper[i].equals("wednesday") && !organizeHelper[i].equals("thursday") &&
                                 !organizeHelper[i].equals("friday") && !organizeHelper[i].equals("saturday") &&
-                                !organizeHelper[i].equals("monday")){
+                                !organizeHelper[i].equals("monday")) {
                             stringBuilder.append(" ");
                             stringBuilder.append(organizeHelper[i]);
                             i++;
@@ -227,8 +243,8 @@ public class checkOnlineSchedule extends JobService {
             return dayByday;
         }
 
-        private void timeChangeNotification(){
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        private void timeChangeNotification() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel("TimeChange", "Time change", NotificationManager.IMPORTANCE_DEFAULT);
                 channel.setDescription("test");
                 channel.setShowBadge(true);
@@ -254,6 +270,74 @@ public class checkOnlineSchedule extends JobService {
 
             NotificationManagerCompat notify = NotificationManagerCompat.from(checkOnlineSchedule.this);
             notify.notify(1, builder.build());
+        }
+
+        public boolean checkedRadioButtonIsToday(int today, int checkedDaysBefore,
+                                                 String[] sqlDayByDay, String[] onlineDayByDay) {
+            circularLinkedList daysOfWeek = new circularLinkedList();
+            for(int i = 1; i < 8; i++){
+                daysOfWeek.add(i);
+            }
+
+            circularLinkedList.Node current = daysOfWeek.head;
+
+            while (current.data != today){
+                current = current.nextNode;
+            }
+
+            for(int x = 0; x < checkedDaysBefore; x++){
+                current = current.nextNode;
+            }
+
+            if(!onlineDayByDay[current.data - 1].equals(sqlDayByDay[current.data - 1])){
+                return true;
+            }
+            return false;
+        }
+
+        private void getSQLCheckboxes(Integer[] checkboxes, String location){
+            //todo fix so it is not so inefficient. Use sql syntax in getCheckboxes()
+            sql = new SQLHelper(getApplicationContext());
+            Cursor cursor = sql.getData();
+            if (cursor.getCount() > 0) {
+                while (cursor.moveToNext()) {
+                    if((cursor.getString(0) + " " + cursor.getString(1) + " " +
+                            cursor.getString(2) + " " + cursor.getString(3)).equals(location) ){
+                        for( int i = 0; i < checkboxes.length; i++){
+                            int indexHolder = 5 + i;
+                            checkboxes[i] = cursor.getInt(indexHolder);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public class circularLinkedList {
+        public class Node {
+            int data;
+            Node nextNode;
+
+            public Node(int data) {
+                this.data = data;
+            }
+        }
+
+        public Node head = null;
+        public Node tail = null;
+
+        public void add(int data) {
+            Node newNode = new Node(data);
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+                newNode.nextNode = head;
+            } else {
+                tail.nextNode = newNode;
+                tail = newNode;
+                tail.nextNode = head;
+            }
         }
     }
 }

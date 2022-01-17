@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         ComponentName component = new ComponentName(this, checkOnlineSchedule.class);
         JobInfo.Builder builder = new JobInfo.Builder(DOWNLOAD_JOB_KEY + 1, component)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setPersisted(true).setPeriodic(6*60*60*1000);
+                .setPersisted(true).setPeriodic(13*60*60*1000);
 
         JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         jobScheduler.schedule(builder.build());

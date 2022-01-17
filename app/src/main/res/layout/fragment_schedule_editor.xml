@@ -119,61 +119,51 @@
             android:textColor="@color/black"
             android:id="@+id/question_when_to_notify"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/day_of"
-            android:id="@+id/day_of"
-            android:layout_gravity="left"/>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notify_day_before"
+                android:id="@+id/day_before"
+                android:layout_gravity="left"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notify_day_before"
-            android:id="@+id/day_before"
-            android:layout_gravity="left"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notify_two_days_before"
+                android:id="@+id/two_days_before"
+                android:layout_gravity="left"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notify_two_days_before"
-            android:id="@+id/two_days_before"
-            android:layout_gravity="left"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notify_three_days_before"
+                android:id="@+id/three_days_before"
+                android:layout_gravity="left"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notify_three_days_before"
-            android:id="@+id/three_days_before"
-            android:layout_gravity="left"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notify_four_days_before"
+                android:id="@+id/four_days_before"
+                android:layout_gravity="left"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notify_four_days_before"
-            android:id="@+id/four_days_before"
-            android:layout_gravity="left"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notify_five_days_before"
+                android:id="@+id/five_days_before"
+                android:layout_gravity="left"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notify_five_days_before"
-            android:id="@+id/five_days_before"
-            android:layout_gravity="left"/>
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notify_six_days_before"
-            android:id="@+id/six_days_before"
-            android:layout_gravity="left"/>
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/notify_week_before"
-            android:id="@+id/week_before"
-            android:layout_gravity="left"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notify_six_days_before"
+                android:id="@+id/six_days_before"
+                android:layout_gravity="left"/>
+        </RadioGroup>
 
         <Button
             android:id="@+id/button_finish_edit_schedule"
