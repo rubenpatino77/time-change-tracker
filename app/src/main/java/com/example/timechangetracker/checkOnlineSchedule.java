@@ -3,12 +3,17 @@ package com.example.timechangetracker;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -20,6 +25,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class checkOnlineSchedule extends JobService {
 
@@ -50,18 +56,20 @@ public class checkOnlineSchedule extends JobService {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            ArrayList<String> strings, sqlTimes;
-            strings = getLocationValues();
-            sqlTimes = getSqlTimes();
+            ArrayList<String> locations, sqlTimes, notificationParams;
 
-            for (int i = 0; i < strings.size(); i++) {
+            notificationParams = getNewParams();
+            locations = getLocationValues(notificationParams);
+            sqlTimes = getSqlTimes(notificationParams);
+
+            for (int i = 0; i < locations.size(); i++) {
 
                 String onlineSchedule = null;
-                String[] onlineDayByDay;
+                String[] onlineDayByDay = new String[7];
                 String[] sqlDayByDay;
 
                 try {
-                    Document doc = Jsoup.connect("https://www.google.com/search" + "?q=" + strings.get(i)).get();
+                    Document doc = Jsoup.connect("https://www.google.com/search" + "?q=" + locations.get(i)).get();
 
                     Elements element = doc.getElementsByClass("WgFkxc");
 
@@ -71,7 +79,15 @@ public class checkOnlineSchedule extends JobService {
                 }
 
                 if (onlineSchedule != null) {
-                    onlineDayByDay = organizeTimes(onlineSchedule);
+                    //onlineDayByDay = organizeTimes(onlineSchedule);
+                    onlineDayByDay[0] = "Monday open 24 hours";
+                    onlineDayByDay[1] = "Tuesday open 24 hours";
+                    onlineDayByDay[2] = "Wednesday open 24 hours";
+                    onlineDayByDay[3] = "Thursday open 24 hours";
+                    onlineDayByDay[4] = "Friday open 24 hours";
+                    onlineDayByDay[5] = "Saturday open 24 hours";
+                    onlineDayByDay[6] = "Sunday open 24 hours hi";
+
                     sqlDayByDay = organizeTimes(sqlTimes.get(i));
 
                     if (!Arrays.equals(onlineDayByDay, sqlDayByDay)) {
@@ -80,7 +96,7 @@ public class checkOnlineSchedule extends JobService {
 
 
                         Integer[] checkboxes = new Integer[6];
-                        getSQLCheckboxes(checkboxes, strings.get(i));
+                        getSQLCheckboxes(checkboxes, locations.get(i));
 
                         int checkedDaysBefore= 0;
                         for(int x = 0; x < checkboxes.length; x++){
@@ -90,7 +106,11 @@ public class checkOnlineSchedule extends JobService {
                         }
 
                         if(checkedRadioButtonIsToday(today, checkedDaysBefore, sqlDayByDay, onlineDayByDay)){
-                            timeChangeNotification();
+                            try {
+                                timeChangeNotification(notificationParams.get(i), i);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -100,39 +120,26 @@ public class checkOnlineSchedule extends JobService {
             return null;
         }
 
-        private ArrayList<String> getLocationValues() {
-            ArrayList<String> locationList;
-            SQLHelper sql;
-            locationList = new ArrayList<>();
-            sql = new SQLHelper(checkOnlineSchedule.this);
+        private ArrayList<String> getLocationValues(ArrayList<String> fullDetails) {
+            ArrayList<String> locationList = new ArrayList<>();
 
-            Cursor values = sql.getData();
-
-            if (values.getCount() > 0) {
-                while (values.moveToNext()) {
-                    String arrayListBuffer = values.getString(0) + " " + values.getString(1) +
-                            " " + values.getString(2) + " " + values.getString(3);
-                    locationList.add(arrayListBuffer);
-                }
+            for(int i=0; i < fullDetails.size(); i++){
+                String[] tokenHelper = fullDetails.get(i).split("\n");
+                locationList.add(tokenHelper[0] + " " + tokenHelper[1] + " " + tokenHelper[2] + " "
+                            + tokenHelper[3]);
             }
+
             return locationList;
         }
 
-        private ArrayList<String> getSqlTimes() {
-            ArrayList<String> sqlTimesList;
-            SQLHelper sql;
-            HomePageFragment home = new HomePageFragment();
-            sqlTimesList = new ArrayList<>();
-            sql = new SQLHelper(checkOnlineSchedule.this);
+        private ArrayList<String> getSqlTimes(ArrayList<String> fullDetails) {
+            ArrayList<String> sqlTimesList = new ArrayList<>();
 
-            Cursor values = sql.getData();
-
-            if (values.getCount() > 0) {
-                while (values.moveToNext()) {
-                    String arrayListBuffer = values.getString(4);
-                    sqlTimesList.add(arrayListBuffer);
-                }
+            for(int i=0; i < fullDetails.size(); i++){
+                String[] tokenHelper = fullDetails.get(i).split("\n");
+                sqlTimesList.add(tokenHelper[4]);
             }
+
             return sqlTimesList;
         }
 
@@ -243,7 +250,7 @@ public class checkOnlineSchedule extends JobService {
             return dayByday;
         }
 
-        private void timeChangeNotification() {
+        private void timeChangeNotification(String locationDetails, int id) throws InterruptedException {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel("TimeChange", "Time change", NotificationManager.IMPORTANCE_DEFAULT);
                 channel.setDescription("test");
@@ -254,10 +261,10 @@ public class checkOnlineSchedule extends JobService {
 
             }
 
-            //todo change so it opens a specific fragment which corresponds to the location that contains the time change
-            Intent intent = new Intent(checkOnlineSchedule.this, HomePageFragment.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(checkOnlineSchedule.this, 0, intent, 0);
+            Intent intent = new Intent(checkOnlineSchedule.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intent.putExtra("parameters", locationDetails);
+            PendingIntent pendingIntent = PendingIntent.getActivity(checkOnlineSchedule.this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(checkOnlineSchedule.this, "TimeChange")
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -269,7 +276,7 @@ public class checkOnlineSchedule extends JobService {
                     .setChannelId("TimeChange");
 
             NotificationManagerCompat notify = NotificationManagerCompat.from(checkOnlineSchedule.this);
-            notify.notify(1, builder.build());
+            notify.notify(id, builder.build());
         }
 
         public boolean checkedRadioButtonIsToday(int today, int checkedDaysBefore,
@@ -311,6 +318,25 @@ public class checkOnlineSchedule extends JobService {
                     }
                 }
             }
+        }
+
+        public ArrayList<String> getNewParams(){
+            ArrayList<String> params = new ArrayList<>();
+
+            sql = new SQLHelper(getApplicationContext());
+            Cursor values = sql.getData();
+            int index = 0;
+            if (values.getCount() > 0) {
+                while (values.moveToNext()) {
+                    String stringBuffer = values.getString(0) + "\n" +
+                            values.getString(1) + "\n" + values.getString(2) + "\n" +
+                            values.getString(3) + "\n" + values.getString(4);
+                    params.add(index, stringBuffer);
+                    index++;
+                }
+            }
+
+            return params;
         }
     }
 

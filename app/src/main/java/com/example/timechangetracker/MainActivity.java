@@ -3,19 +3,12 @@ package com.example.timechangetracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 
 import java.util.Objects;
 
@@ -36,6 +29,34 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, homePage).commit();
 
         checkOnlineInit();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+
+        String newString;
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            newString= null;
+            checkOnlineInit();
+        } else {
+            newString= extras.getString("parameters");
+
+            Bundle bundle = new Bundle();
+            String[] tokenHelper = newString.split("\n");
+
+            bundle.putString("name", tokenHelper[0]);
+            bundle.putString("address", tokenHelper[1]);
+            bundle.putString("city", tokenHelper[2]);
+            bundle.putString("state", tokenHelper[3]);
+            bundle.putString("time", tokenHelper[4]);
+
+            EditExistingScheduleFragment frag = new EditExistingScheduleFragment();
+            frag.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, frag).addToBackStack(null).commit();
+        }
     }
 
     private void checkOnlineInit(){
