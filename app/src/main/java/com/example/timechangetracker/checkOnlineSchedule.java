@@ -79,14 +79,8 @@ public class checkOnlineSchedule extends JobService {
                 }
 
                 if (onlineSchedule != null) {
-                    //onlineDayByDay = organizeTimes(onlineSchedule);
-                    onlineDayByDay[0] = "Monday open 24 hours";
-                    onlineDayByDay[1] = "Tuesday open 24 hours";
-                    onlineDayByDay[2] = "Wednesday open 24 hours";
-                    onlineDayByDay[3] = "Thursday open 24 hours";
-                    onlineDayByDay[4] = "Friday open 24 hours";
-                    onlineDayByDay[5] = "Saturday open 24 hours";
-                    onlineDayByDay[6] = "Sunday open 24 hours hi";
+                    onlineDayByDay = organizeTimes(onlineSchedule);
+
 
                     sqlDayByDay = organizeTimes(sqlTimes.get(i));
 
