@@ -166,14 +166,6 @@ public class ScheduleEditorFragment extends Fragment {
             }
         });
 
-        muteButton = view.findViewById(R.id.button_mute_schedule);
-        muteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         backButton = view.findViewById(R.id.button_go_back);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override

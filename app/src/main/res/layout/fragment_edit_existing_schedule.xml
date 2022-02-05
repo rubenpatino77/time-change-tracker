@@ -32,14 +32,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
-
-            <ImageButton
-                android:id="@+id/button_mute_schedule"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:src="@android:drawable/ic_lock_silent_mode_off"
-                android:backgroundTint="#028A0F"/>
         </LinearLayout>
 
         <TextView
