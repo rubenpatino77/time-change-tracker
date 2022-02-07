@@ -26,6 +26,7 @@
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
+                android:background="@color/grey"
                 android:src="@android:drawable/ic_menu_revert"/>
 
             <Space
@@ -164,7 +165,7 @@
             android:layout_margin="20dp"
             android:text="@string/finish"
             android:background="@android:drawable/dialog_holo_light_frame"
-            android:backgroundTint="#00008B"
+            android:backgroundTint="@color/purple"
             app:backgroundTint="@null"/>
 
         <Button

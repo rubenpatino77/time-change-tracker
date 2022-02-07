@@ -26,6 +26,8 @@
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:backgroundTint="@color/grey"
                 android:src="@android:drawable/ic_menu_revert"/>
 
             <Space
