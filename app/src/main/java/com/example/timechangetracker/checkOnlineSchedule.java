@@ -26,9 +26,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class checkOnlineSchedule extends JobService {
 
+    private final static Logger log = Logger.getLogger(checkOnlineSchedule.class.getName());
     getOnlineSchedule getOnlineSchedule;
     JobParameters parameters;
 
@@ -75,7 +78,7 @@ public class checkOnlineSchedule extends JobService {
 
                     onlineSchedule = element.text();
                 } catch (Exception e) {
-                    e.printStackTrace(); //todo stackoverflow people say dont use this. still need to catch but not with printstacktrace
+                    log.info(e.toString() + "\nOnline schedule could not properly be acquired.");
                 }
 
                 if (onlineSchedule != null) {
@@ -103,7 +106,7 @@ public class checkOnlineSchedule extends JobService {
                             try {
                                 timeChangeNotification(notificationParams.get(i), i);
                             } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                log.info(e.toString() + "\nNotification could not be sent.");
                             }
                         }
                     }

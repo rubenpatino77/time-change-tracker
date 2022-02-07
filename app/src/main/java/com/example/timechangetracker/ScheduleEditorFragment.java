@@ -24,8 +24,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.util.logging.Logger;
+
 public class ScheduleEditorFragment extends Fragment {
 
+    private final static Logger log = Logger.getLogger(ScheduleEditorFragment.class.getName());
     String name, address, city, state, time, arrayValue;
     EditText nameInput, addressInput, cityInput, stateInput;
     Button finishButton, cancelButton;
@@ -236,7 +239,8 @@ public class ScheduleEditorFragment extends Fragment {
                 val = element.text();
 
             } catch (Exception e){
-                e.printStackTrace();
+                log.info(e.toString() + "\nOnline schedule could not properly be acquired.");
+                val = "Online schedule could not properly be acquired.";
             }
 
             return null;
@@ -250,7 +254,7 @@ public class ScheduleEditorFragment extends Fragment {
         try {
             java.util.concurrent.TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.info(e.toString() + "\nAn error occurred while sleeping to give data scraping time.");
         }
     }
 }
