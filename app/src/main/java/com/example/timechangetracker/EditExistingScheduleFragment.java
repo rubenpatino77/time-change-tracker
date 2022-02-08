@@ -24,7 +24,7 @@ public class EditExistingScheduleFragment extends Fragment {
     String name, address, city, state, time;
     TextView nameInput, addressInput, cityInput, stateInput, timeFound;
     Button finishButton, deleteButton;
-    ImageButton muteButton, backButton;
+    ImageButton backButton;
     RadioButton oneDay, twoDays, threeDays, fourDays, fiveDays, sixDays;
     Integer[] checkboxes;
     SQLHelper sql;
@@ -187,7 +187,6 @@ public class EditExistingScheduleFragment extends Fragment {
 
 
     private void getSQLCheckboxes(View view, Integer[] checkboxes){
-        //todo fix so it is not so inefficient. Use sql syntax in getCheckboxes()
         sql = new SQLHelper(view.getContext());
         Cursor cursor = sql.getData();
         if (cursor.getCount() > 0) {

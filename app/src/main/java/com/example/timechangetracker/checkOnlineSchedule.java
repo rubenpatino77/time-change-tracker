@@ -300,7 +300,6 @@ public class checkOnlineSchedule extends JobService {
         }
 
         private void getSQLCheckboxes(Integer[] checkboxes, String location){
-            //todo fix so it is not so inefficient. Use sql syntax in getCheckboxes()
             sql = new SQLHelper(getApplicationContext());
             Cursor cursor = sql.getData();
             if (cursor.getCount() > 0) {

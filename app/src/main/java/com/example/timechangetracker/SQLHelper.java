@@ -100,19 +100,5 @@ public class SQLHelper extends SQLiteOpenHelper {
         Cursor cursor = database.rawQuery("Select * from UserDetails", null);
         return cursor;
     }
-
-    public Integer[] getCheckboxes(String name, String address, String city, String state){
-        SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery("Select * from UserDetails where locationName = ? AND address = ? AND city = ? AND state = ?", new String[] {name, address, city, state});
-        Integer[] checkbox0 = new Integer[8];
-        String[] test = new String[3];
-        test[0] = cursor.getString(0);
-        test[1] = cursor.getString(1);
-        checkbox0[2] = cursor.getInt(2);
-        checkbox0[3] = cursor.getInt(3);
-        checkbox0[4] = cursor.getInt(4);
-        checkbox0[5] = cursor.getInt(5);
-        return checkbox0;
-    }
 }
 
